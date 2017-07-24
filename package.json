@@ -1,6 +1,6 @@
 {
   "name": "http-lucass",
-  "version": "0.1.0",
+  "version": "0.0.0-development",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -14,7 +14,8 @@
     "postcoverage": "codecov",
     "precommit": "npm test",
     "prepush": "npm test",
-    "commitmsg": "validate-commit-msg"
+    "commitmsg": "validate-commit-msg",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "keywords": [],
   "author": "Mikeal Rogers <mikeal.rogers@gmail.com> (http://www.mikealrogers.com)",
@@ -37,11 +38,16 @@
     "micro": "^7.3.3",
     "standard": "^10.0.2",
     "tap": "^10.7.0",
-    "validate-commit-msg": "^2.13.1"
+    "validate-commit-msg": "^2.13.1",
+    "semantic-release": "^6.3.6"
   },
   "dependencies": {
     "node-fetch": "^1.7.1",
-    "node-web-streams": "^0.2.2",
-    "once": "^1.4.0"
+    "once": "^1.4.0",
+    "through2": "^2.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mikeal/http-lucass.git"
   }
 }

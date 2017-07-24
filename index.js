@@ -1,4 +1,4 @@
-const createHasher = require('hashes-stream')
+/* globals fetch */
 const once = require('once')
 const through = require('through2')
 
@@ -15,14 +15,14 @@ if (!process.browser) {
 }
 
 class FetchLucass {
-  constructor (baseurl=origin) {
+  constructor (baseurl = origin) {
     this.baseurl = baseurl
     if (!baseurl.endsWith('/')) {
       this.baseurl += '/'
     }
   }
   set (value, cb) {
-    if (!value || !Buffer.isBuffer(value) && !value.readable) {
+    if (!value || (!Buffer.isBuffer(value) && !value.readable)) {
       return cb(new Error('Invalid type, value must be Buffer or Stream.'))
     }
     cb = once(cb)
@@ -55,7 +55,7 @@ class FetchLucass {
     return stream
   }
   hash (value, cb) {
-    if (!value || !Buffer.isBuffer(value) && !value.readable) {
+    if (!value || (!Buffer.isBuffer(value) && !value.readable)) {
       return cb(new Error('Invalid type, value must be Buffer or Stream.'))
     }
     cb = once(cb)
