@@ -23,6 +23,7 @@ module.exports = store => {
     if (req.method === 'PUT') {
       if (req.url === '/_set.lucass') return or404(set(req), res)
       else if (req.url === '/_hash.lucass') return or404(hash(req), res)
+      else return micro.send(res, 404)
     } else if (req.method === 'GET') {
       let hash = req.url.slice(1)
       return or404(get(hash), res)

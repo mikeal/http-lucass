@@ -28,7 +28,9 @@ class FetchLucass {
     cb = once(cb)
     fetch(`${this.baseurl}_set.lucass`, {method: 'PUT', body: value})
     .then(res => {
-      if (res.status !== 200) throw new Error(`Not found. ${res.status}`)
+      if (res.status !== 200) {
+        return cb(new Error(`Not found. ${res.status}`))
+      }
       return res.text()
     })
     .then(hash => cb(null, hash))
@@ -38,7 +40,9 @@ class FetchLucass {
     cb = once(cb)
     fetch(`${this.baseurl}${hash}`)
     .then(res => {
-      if (res.status !== 200) throw new Error(`Not found. ${res.status}`)
+      if (res.status !== 200) {
+        return cb(new Error(`Not found. ${res.status}`))
+      }
       return res.buffer()
     })
     .then(data => cb(null, data))
@@ -46,9 +50,11 @@ class FetchLucass {
   }
   getStream (hash) {
     let stream = proxy()
-    let f = fetch(`${this.baseurl}${hash}`)
-    f.then(res => {
-      if (res.status !== 200) throw new Error(`Not found. ${res.status}`)
+    fetch(`${this.baseurl}${hash}`)
+    .then(res => {
+      if (res.status !== 200) {
+        return stream.emit('error', new Error(`Not found. ${res.status}`))
+      }
       res.body.pipe(stream)
     })
     .catch(err => stream.emit('error', err))
@@ -61,10 +67,13 @@ class FetchLucass {
     cb = once(cb)
     fetch(`${this.baseurl}_hash.lucass`, {method: 'PUT', body: value})
     .then(res => {
-      if (res.status !== 200) throw new Error(`Not found. ${res.status}`)
+      if (res.status !== 200) {
+        return cb(new Error(`Not found. ${res.status}`))
+      }
       return res.text()
     })
     .then(hash => cb(null, hash))
+    .catch(err => cb(err))
   }
 }
 

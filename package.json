@@ -8,7 +8,7 @@
   },
   "scripts": {
     "commit": "git-cz",
-    "test": "tap test/test-*.js",
+    "test": "tap test/test-*.js --100",
     "posttest": "standard",
     "coverage": "tap test/test-*.js --coverage-report=lcov",
     "postcoverage": "codecov",
