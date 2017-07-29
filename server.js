@@ -5,6 +5,8 @@ const propPromise = (inst, prop) => {
   return promisify((...args) => inst[prop](...args))
 }
 
+const f = s => s // function to filter for positive values.
+
 module.exports = store => {
   let get = propPromise(store, 'getBuffer')
   let set = propPromise(store, 'set')
@@ -21,9 +23,15 @@ module.exports = store => {
   const server = micro(async (req, res) => {
     // console.error(req.method, req.url)
     if (req.method === 'PUT') {
-      if (req.url === '/_set.lucass') return or404(set(req), res)
-      else if (req.url === '/_hash.lucass') return or404(hash(req), res)
-      else return micro.send(res, 404)
+      if (req.url.startsWith('/_set.lucass')) {
+        let args = req.url.slice('/_set.lucass'.length).split('/').filter(f)
+        return or404(set(req, ...args), res)
+      } else if (req.url.startsWith('/_hash.lucass')) {
+        let args = req.url.slice('/_hash.lucass'.length).split('/').filter(f)
+        return or404(hash(req, ...args), res)
+      } else {
+        return micro.send(res, 404)
+      }
     } else if (req.method === 'GET') {
       let hash = req.url.slice(1)
       return or404(get(hash), res)

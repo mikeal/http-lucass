@@ -21,12 +21,14 @@ class FetchLucass {
       this.baseurl += '/'
     }
   }
-  set (value, cb) {
+  set (value, ...args) {
+    let cb = args.pop()
     if (!value || (!Buffer.isBuffer(value) && !value.readable)) {
       return cb(new Error('Invalid type, value must be Buffer or Stream.'))
     }
     cb = once(cb)
-    fetch(`${this.baseurl}_set.lucass`, {method: 'PUT', body: value})
+    let opts = {method: 'PUT', body: value}
+    fetch(`${this.baseurl}_set.lucass/${args.join('/')}`, opts)
     .then(res => {
       if (res.status !== 200) {
         return cb(new Error(`Not found. ${res.status}`))
@@ -60,12 +62,14 @@ class FetchLucass {
     .catch(err => stream.emit('error', err))
     return stream
   }
-  hash (value, cb) {
+  hash (value, ...args) {
+    let cb = args.pop()
     if (!value || (!Buffer.isBuffer(value) && !value.readable)) {
       return cb(new Error('Invalid type, value must be Buffer or Stream.'))
     }
     cb = once(cb)
-    fetch(`${this.baseurl}_hash.lucass`, {method: 'PUT', body: value})
+    let opts = {method: 'PUT', body: value}
+    fetch(`${this.baseurl}_hash.lucass/${args.join('/')}`, opts)
     .then(res => {
       if (res.status !== 200) {
         return cb(new Error(`Not found. ${res.status}`))
